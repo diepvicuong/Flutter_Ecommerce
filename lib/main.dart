@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nordic_ecommerce/bottom_bar.dart';
 
 import 'modules/home/page/home_page.dart';
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: BottomBar(),
     );
   }
 }

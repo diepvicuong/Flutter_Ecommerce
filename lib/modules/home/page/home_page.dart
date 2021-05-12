@@ -44,9 +44,9 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             HomeAvertiseWidget(),
-            SizedBox(height: 10),
+            const SizedBox(height: AppSize.sizedBoxHeightM),
             homeServiceHeader(),
-            SizedBox(height: 10),
+            const SizedBox(height: AppSize.sizedBoxHeightM),
             HomeServiceWidget(),
             homeProductHeader(),
             HomeProductWidget(),
@@ -106,8 +106,6 @@ class HomeAvertiseWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
         height: 200.0,
-        // padding: EdgeInsets.all(10),
-        // width: 350.0,
         child: Carousel(
           images: [
             homeAdvertiseItem(
@@ -161,14 +159,12 @@ class HomeServiceWidget extends StatelessWidget {
       child: Column(
         children: [
           Card(
-            // with Card
-
             child: Image.network(imageUrl),
             elevation: 18.0,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0)),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: AppSize.sizedBoxHeightM),
           Text(title),
         ],
       ),
@@ -211,7 +207,7 @@ class HomeProductWidget extends StatelessWidget {
                 listHomeProduct[index].imageUrl,
                 fit: BoxFit.fill,
               )),
-          SizedBox(height: 5),
+          const SizedBox(height: AppSize.sizedBoxHeightS),
           Expanded(
               flex: 1,
               child: Text(
@@ -220,7 +216,7 @@ class HomeProductWidget extends StatelessWidget {
                 maxLines: 2,
                 textAlign: TextAlign.center,
               )),
-          SizedBox(height: 5),
+          const SizedBox(height: AppSize.sizedBoxHeightS),
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -239,7 +235,7 @@ class HomeProductWidget extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: AppSize.sizedBoxHeightS),
         ],
       ),
     );
