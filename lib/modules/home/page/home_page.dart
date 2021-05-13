@@ -1,6 +1,7 @@
 import 'package:carousel_pro_nullsafety/carousel_pro_nullsafety.dart';
 import 'package:flutter/material.dart';
 import 'package:nordic_ecommerce/modules/home/widgets/home_searchbar_widget.dart';
+import 'package:nordic_ecommerce/modules/product/page/product_list_page.dart';
 import 'package:nordic_ecommerce/res/sample_value.dart';
 import 'package:nordic_ecommerce/res/sizes.dart';
 import 'package:nordic_ecommerce/res/styles.dart';
@@ -184,60 +185,66 @@ class HomeProductWidget extends StatelessWidget {
       mainAxisSpacing: 0,
       crossAxisCount: 2,
       children: List.generate(
-          listHomeProduct.length, (index) => homeProductItem(index)),
+          listHomeProduct.length, (index) => homeProductItem(context, index)),
     ));
   }
 
-  Widget homeProductItem(int index) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-              right: (index % 2 == 0)
-                  ? BorderSide(width: 0.4, color: Colors.grey)
-                  : BorderSide(width: 0.4, color: Colors.white),
-              bottom: (listHomeProduct.length - index <= 2)
-                  ? BorderSide(width: 0.4, color: Colors.white)
-                  : BorderSide(width: 0.4, color: Colors.grey))),
-      child: Column(
-        children: [
-          Expanded(
-              flex: 8,
-              child: Image.network(
-                listHomeProduct[index].imageUrl,
-                fit: BoxFit.fill,
-              )),
-          const SizedBox(height: AppSize.sizedBoxHeightS),
-          Expanded(
-              flex: 1,
-              child: Text(
-                listHomeProduct[index].title,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-              )),
-          const SizedBox(height: AppSize.sizedBoxHeightS),
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
-              decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.circular(AppSize.commonBorderRadius),
-                  color: listHomeProduct[index].subTitle != null
-                      ? Colors.green
-                      : Colors.transparent),
-              child: Text(
-                listHomeProduct[index].subTitle ?? '',
-                style: TextStyle(
+  Widget homeProductItem(BuildContext context, int index) {
+    return GestureDetector(
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(
+                right: (index % 2 == 0)
+                    ? BorderSide(width: 0.4, color: Colors.grey)
+                    : BorderSide(width: 0.4, color: Colors.white),
+                bottom: (listHomeProduct.length - index <= 2)
+                    ? BorderSide(width: 0.4, color: Colors.white)
+                    : BorderSide(width: 0.4, color: Colors.grey))),
+        child: Column(
+          children: [
+            Expanded(
+                flex: 8,
+                child: Image.network(
+                  listHomeProduct[index].imageUrl,
+                  fit: BoxFit.fill,
+                )),
+            const SizedBox(height: AppSize.sizedBoxHeightS),
+            Expanded(
+                flex: 1,
+                child: Text(
+                  listHomeProduct[index].title,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                )),
+            const SizedBox(height: AppSize.sizedBoxHeightS),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.circular(AppSize.commonBorderRadius),
                     color: listHomeProduct[index].subTitle != null
-                        ? Colors.white
+                        ? Colors.green
                         : Colors.transparent),
+                child: Text(
+                  listHomeProduct[index].subTitle ?? '',
+                  style: TextStyle(
+                      color: listHomeProduct[index].subTitle != null
+                          ? Colors.white
+                          : Colors.transparent),
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: AppSize.sizedBoxHeightS),
-        ],
+            const SizedBox(height: AppSize.sizedBoxHeightS),
+          ],
+        ),
       ),
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => ProductListPage()));
+      },
     );
   }
 }
