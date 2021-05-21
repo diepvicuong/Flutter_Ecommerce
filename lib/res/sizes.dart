@@ -11,4 +11,6 @@ class AppSize {
   static const sizedBoxHeightS = 5.0;
   static const sizedBoxHeightM = 10.0;
   static const sizedBoxHeightL = 20.0;
+
+  static const ratioHomeService = 0.3;
 }

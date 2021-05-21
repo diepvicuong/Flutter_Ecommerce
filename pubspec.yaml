@@ -26,6 +26,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   dio: ^4.0.0
   carousel_pro_nullsafety: ^1.0.2
+  get: ^4.1.4
 
 dev_dependencies:
   flutter_test:

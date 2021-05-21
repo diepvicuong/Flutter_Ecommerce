@@ -1,17 +1,18 @@
 import 'package:carousel_pro_nullsafety/carousel_pro_nullsafety.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:nordic_ecommerce/controllers/home/home_controller.dart';
+import 'package:nordic_ecommerce/data/models/home_category.dart';
 import 'package:nordic_ecommerce/modules/home/widgets/home_searchbar_widget.dart';
+import 'package:nordic_ecommerce/modules/home/widgets/loading_widget.dart';
 import 'package:nordic_ecommerce/modules/product/page/product_list_page.dart';
 import 'package:nordic_ecommerce/res/sample_value.dart';
 import 'package:nordic_ecommerce/res/sizes.dart';
 import 'package:nordic_ecommerce/res/styles.dart';
+import 'package:nordic_ecommerce/routes/app_pages.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,13 +45,13 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            HomeAvertiseWidget(),
+            HomeSliderWidget(),
             const SizedBox(height: AppSize.sizedBoxHeightM),
             homeServiceHeader(),
             const SizedBox(height: AppSize.sizedBoxHeightM),
             HomeServiceWidget(),
             homeProductHeader(),
-            HomeProductWidget(),
+            HomeCatalogWidget(),
           ],
         ),
       ),
@@ -98,35 +99,38 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class HomeAvertiseWidget extends StatelessWidget {
-  const HomeAvertiseWidget({
+class HomeSliderWidget extends GetView<HomeController> {
+  const HomeSliderWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: 200.0,
-        child: Carousel(
-          images: [
-            homeAdvertiseItem(
-                imageUrl:
-                    'https://salt.tikicdn.com/cache/w394/ts/banner/4b/41/04/e51b9f9aa9732b4457e993bd79b9645b.png.jpg'),
-            homeAdvertiseItem(
-                imageUrl:
-                    'https://salt.tikicdn.com/cache/w394/ts/banner/8b/98/09/ad3d7ade0ca2c1821c672115c41fa661.png.jpg'),
-          ],
-          dotSize: 6.0,
-          dotSpacing: 15.0,
-          dotColor: Colors.purple[100]!,
-          dotIncreasedColor: Colors.blue,
-          dotVerticalPadding: AppSize.homeItemPadding,
-          indicatorBgPadding: 5.0,
-          dotBgColor: Colors.purple.withOpacity(0),
-        ));
+    return GetX<HomeController>(
+      builder: (_) {
+        return SizedBox(
+            height: 200.0,
+            child: Carousel(
+              images: controller.homeModel.homeSliders != null
+                  ? List.generate(
+                      controller.homeModel.homeSliders!.length,
+                      (index) => homeSliderItem(
+                          imageUrl:
+                              controller.homeModel.homeSliders![index].image))
+                  : [LoadingWidget()],
+              dotSize: 6.0,
+              dotSpacing: 15.0,
+              dotColor: Colors.purple[100]!,
+              dotIncreasedColor: Colors.blue,
+              dotVerticalPadding: AppSize.homeItemPadding,
+              indicatorBgPadding: 5.0,
+              dotBgColor: Colors.purple.withOpacity(0),
+            ));
+      },
+    );
   }
 
-  Widget homeAdvertiseItem({required String imageUrl}) {
+  Widget homeSliderItem({required String imageUrl}) {
     return Padding(
       padding: const EdgeInsets.all(AppSize.homeItemPadding),
       child: ClipRRect(
@@ -140,17 +144,26 @@ class HomeAvertiseWidget extends StatelessWidget {
   }
 }
 
-class HomeServiceWidget extends StatelessWidget {
+class HomeServiceWidget extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: listHomeService.length,
-          itemBuilder: (context, index) => homeServiceItem(
-              listHomeService[index].imageUrl,
-              listHomeService[index].serviceName)),
+      height: Get.height * AppSize.ratioHomeService,
+      child: GetX<HomeController>(
+        initState: (state) {
+          Get.find<HomeController>().getAll();
+        },
+        builder: (_) {
+          return _.homeModel.homeServices == null
+              ? LoadingWidget()
+              : ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _.homeModel.homeServices!.length,
+                  itemBuilder: (context, index) => homeServiceItem(
+                      _.homeModel.homeServices![index].imageUrl,
+                      _.homeModel.homeServices![index].title));
+        },
+      ),
     );
   }
 
@@ -160,7 +173,12 @@ class HomeServiceWidget extends StatelessWidget {
       child: Column(
         children: [
           Card(
-            child: Image.network(imageUrl),
+            child: Image.network(
+              imageUrl,
+              height: Get.height * AppSize.ratioHomeService - 50,
+              width: Get.width * 0.8,
+              fit: BoxFit.fill,
+            ),
             elevation: 18.0,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0)),
@@ -173,23 +191,30 @@ class HomeServiceWidget extends StatelessWidget {
   }
 }
 
-class HomeProductWidget extends StatelessWidget {
+class HomeCatalogWidget extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: GridView.count(
-      shrinkWrap: true,
-      primary: false,
-      padding: const EdgeInsets.all(AppSize.homeItemPadding),
-      crossAxisSpacing: 0,
-      mainAxisSpacing: 0,
-      crossAxisCount: 2,
-      children: List.generate(
-          listHomeProduct.length, (index) => homeProductItem(context, index)),
+    return Container(child: GetX<HomeController>(
+      builder: (c) {
+        return GridView.count(
+          shrinkWrap: true,
+          primary: false,
+          padding: const EdgeInsets.all(AppSize.homeItemPadding),
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 0,
+          crossAxisCount: 2,
+          children: c.homeModel.homeCategories != null
+              ? List.generate(
+                  c.homeModel.homeCategories!.length,
+                  (index) => homeCatalogItem(
+                      context, index, c.homeModel.homeCategories![index]))
+              : [LoadingWidget()],
+        );
+      },
     ));
   }
 
-  Widget homeProductItem(BuildContext context, int index) {
+  Widget homeCatalogItem(BuildContext context, int index, HomeCategory item) {
     return GestureDetector(
       child: Container(
         decoration: BoxDecoration(
@@ -206,14 +231,14 @@ class HomeProductWidget extends StatelessWidget {
             Expanded(
                 flex: 8,
                 child: Image.network(
-                  listHomeProduct[index].imageUrl,
+                  item.imageUrl,
                   fit: BoxFit.fill,
                 )),
             const SizedBox(height: AppSize.sizedBoxHeightS),
             Expanded(
                 flex: 1,
                 child: Text(
-                  listHomeProduct[index].title,
+                  item.name,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   textAlign: TextAlign.center,
@@ -225,13 +250,12 @@ class HomeProductWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius:
                         BorderRadius.circular(AppSize.commonBorderRadius),
-                    color: listHomeProduct[index].subTitle != null
-                        ? Colors.green
-                        : Colors.transparent),
+                    color:
+                        item.desc != null ? Colors.green : Colors.transparent),
                 child: Text(
-                  listHomeProduct[index].subTitle ?? '',
+                  item.desc,
                   style: TextStyle(
-                      color: listHomeProduct[index].subTitle != null
+                      color: item.desc != null
                           ? Colors.white
                           : Colors.transparent),
                 ),
@@ -242,8 +266,8 @@ class HomeProductWidget extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ProductListPage()));
+        Get.toNamed(Routes.SUB_CATALOG);
+        controller.selectedCatalog = item;
       },
     );
   }

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:nordic_ecommerce/controllers/home/home_controller.dart';
+import 'package:nordic_ecommerce/controllers/product/product_controller.dart';
+import 'package:nordic_ecommerce/data/models/home_category.dart';
 import 'package:nordic_ecommerce/modules/product/models/product_item.dart';
 import 'package:nordic_ecommerce/res/colors.dart';
 import 'package:nordic_ecommerce/res/sample_value.dart';
 import 'package:nordic_ecommerce/res/sizes.dart';
-import 'package:nordic_ecommerce/res/styles.dart';
 
-class ProductListPage extends StatefulWidget {
-  @override
-  _ProductListPageState createState() => _ProductListPageState();
-}
-
-class _ProductListPageState extends State<ProductListPage> {
+class ProductListPage extends GetView<ProductController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,17 +102,21 @@ class ProductListFilter extends StatelessWidget {
 class ProductListGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: GridView.count(
-      shrinkWrap: true,
-      primary: false,
-      padding: const EdgeInsets.all(AppSize.homeItemPadding),
-      crossAxisSpacing: 20,
-      mainAxisSpacing: 20,
-      crossAxisCount: 2,
-      childAspectRatio: 2 / 3,
-      children: List.generate(listProductCamera.length,
-          (index) => productItem(context, listProductCamera[index])),
+    return Container(child: GetX<ProductController>(
+      builder: (c) {
+        c.subCategories = Get.find<HomeController>().selectedCatalog;
+        return GridView.count(
+          shrinkWrap: true,
+          primary: false,
+          padding: const EdgeInsets.all(AppSize.homeItemPadding),
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
+          crossAxisCount: 2,
+          childAspectRatio: 2 / 3,
+          children: List.generate(listProductCamera.length,
+              (index) => productItem(context, listProductCamera[index])),
+        );
+      },
     ));
   }
 

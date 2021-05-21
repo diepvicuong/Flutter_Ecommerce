@@ -1,20 +1,20 @@
 import 'package:nordic_ecommerce/modules/home/models/home_product_model.dart';
-import 'package:nordic_ecommerce/modules/home/models/home_service_model.dart';
+import 'package:nordic_ecommerce/data/models/home_service.dart';
 import 'package:nordic_ecommerce/modules/product/models/product_item.dart';
 
 List<HomeService> listHomeService = [
   HomeService(
       imageUrl:
           'https://salt.tikicdn.com/cache/w295/ts/banner/d3/f9/56/3d60e02f306cbb57d8a5abadd69736c5.png.jpg',
-      serviceName: 'Nguyên lí hoạt động'),
+      title: 'Nguyên lí hoạt động'),
   HomeService(
       imageUrl:
           'https://salt.tikicdn.com/cache/w295/ts/banner/18/b9/b3/ddef93f23bdc48e020c14c08bcd00499.png.jpg',
-      serviceName: 'Thiết bị cảnh báo'),
+      title: 'Thiết bị cảnh báo'),
   HomeService(
       imageUrl:
           'https://salt.tikicdn.com/cache/w295/ts/banner/e4/21/4e/f394a552921658d4011b8d0dba2e9f61.png.jpg',
-      serviceName: 'Camera an ninh'),
+      title: 'Camera an ninh'),
 ];
 
 List<HomeProduct> listHomeProduct = [
