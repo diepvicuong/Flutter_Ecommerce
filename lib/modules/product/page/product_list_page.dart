@@ -1,15 +1,38 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:nordic_ecommerce/controllers/home/home_controller.dart';
 import 'package:nordic_ecommerce/controllers/product/product_controller.dart';
-import 'package:nordic_ecommerce/data/models/home_category.dart';
-import 'package:nordic_ecommerce/modules/product/models/product_item.dart';
+import 'package:nordic_ecommerce/data/models/home/home_category.dart';
+import 'package:nordic_ecommerce/data/models/product/product_model.dart';
+import 'package:nordic_ecommerce/data/provider/api.dart';
+import 'package:nordic_ecommerce/data/repository/product_repository.dart';
+import 'package:nordic_ecommerce/modules/home/widgets/loading_widget.dart';
 import 'package:nordic_ecommerce/res/colors.dart';
-import 'package:nordic_ecommerce/res/sample_value.dart';
 import 'package:nordic_ecommerce/res/sizes.dart';
 
-class ProductListPage extends GetView<ProductController> {
+class ProductListPage extends StatefulWidget {
+  final HomeCategory selectedCategory;
+
+  const ProductListPage({Key? key, required this.selectedCategory})
+      : super(key: key);
+
+  @override
+  _ProductListPageState createState() => _ProductListPageState();
+}
+
+class _ProductListPageState extends State<ProductListPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    Get.put<ProductController>(ProductController(
+            productRepository:
+                ProductRepository(apiClient: MyApiClient(httpClient: Dio()))))
+        .getProductListById(widget.selectedCategory.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +44,7 @@ class ProductListPage extends GetView<ProductController> {
             Navigator.pop(context);
           },
         ),
-        title: Text('Hệ thống báo động'),
+        title: Text('${widget.selectedCategory.name}'),
         actions: [
           IconButton(
             icon: Icon(Icons.search),
@@ -31,12 +54,14 @@ class ProductListPage extends GetView<ProductController> {
           ),
         ],
       ),
-      body: Center(
-          child: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
-          children: [ProductListFilter(), ProductListGridView()],
+          children: [
+            ProductListFilter(),
+            ProductListGridView(),
+          ],
         ),
-      )),
+      ),
     );
   }
 }
@@ -102,25 +127,26 @@ class ProductListFilter extends StatelessWidget {
 class ProductListGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(child: GetX<ProductController>(
+    return GetX<ProductController>(
       builder: (c) {
-        c.subCategories = Get.find<HomeController>().selectedCatalog;
-        return GridView.count(
-          shrinkWrap: true,
-          primary: false,
-          padding: const EdgeInsets.all(AppSize.homeItemPadding),
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-          crossAxisCount: 2,
-          childAspectRatio: 2 / 3,
-          children: List.generate(listProductCamera.length,
-              (index) => productItem(context, listProductCamera[index])),
-        );
+        return c.productList.length > 0
+            ? GridView.count(
+                shrinkWrap: true,
+                primary: false,
+                padding: const EdgeInsets.all(AppSize.homeItemPadding),
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 20,
+                crossAxisCount: 2,
+                childAspectRatio: 2 / 3,
+                children: List.generate(c.productList.length,
+                    (index) => productItem(c.productList[index])),
+              )
+            : LoadingWidget();
       },
-    ));
+    );
   }
 
-  Widget productItem(BuildContext context, ProductItem item) {
+  Widget productItem(Product item) {
     return GestureDetector(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(AppSize.commonBorderRadius),
@@ -129,7 +155,7 @@ class ProductListGridView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              item.salePercent != null
+              item.percentDiscount != 0
                   ? Container(
                       width: 60,
                       height: 30,
@@ -139,7 +165,7 @@ class ProductListGridView extends StatelessWidget {
                           borderRadius: BorderRadius.only(
                               bottomRight: Radius.circular(10))),
                       child: Text(
-                        '${item.salePercent}%',
+                        '${item.percentDiscount}%',
                       ),
                     )
                   : SizedBox(
@@ -154,7 +180,7 @@ class ProductListGridView extends StatelessWidget {
                         Expanded(
                             flex: 8,
                             child: Image.network(
-                              item.imageUrl,
+                              item.image,
                               fit: BoxFit.fill,
                             )),
                         const SizedBox(height: AppSize.sizedBoxHeightS),
@@ -172,14 +198,14 @@ class ProductListGridView extends StatelessWidget {
                             child: Wrap(
                               children: [
                                 Text(
-                                  '${item.currentPrice * 1000000}đ',
+                                  '${item.price}đ',
                                   style: TextStyle(
                                       color: Colors.red, fontSize: 16),
                                 ),
                                 SizedBox(width: AppSize.sizeBoxWidthS),
                                 Text(
-                                  item.oldPrice != null
-                                      ? '${item.oldPrice}đ'
+                                  item.finalPrice != null
+                                      ? '${item.finalPrice}đ'
                                       : '',
                                   style: TextStyle(
                                       decoration: TextDecoration.lineThrough,
@@ -194,7 +220,7 @@ class ProductListGridView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              '${item.star.toStringAsFixed(1)}',
+                              '${item.ratingCount.toStringAsFixed(1)}',
                               style: TextStyle(
                                 color: Colors.grey,
                               ),

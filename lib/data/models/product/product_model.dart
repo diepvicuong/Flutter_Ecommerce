@@ -1,52 +1,51 @@
-import 'dart:convert';
+import 'package:nordic_ecommerce/res/utils/string_util.dart';
 
-class HomeHighlightProduct {
+class Product {
   int productId;
   int categoryId;
   int categoryparentId;
   String sku;
   String name;
-  String description;
+  String? description;
   int price;
   int finalPrice;
-  int ispromotion;
+  int isPromotion;
   int percentDiscount;
   String image;
   List<String>? imagesUrl;
-  int? stock;
-  int? display;
-  int? ratingScore;
-  int? ratingCount;
-  int? quantity;
-  int? warranty;
+  int stock;
+  int display;
+  double ratingScore;
+  int ratingCount;
+  int quantity;
+  int warranty;
   int? attachProduct;
   int? productDocument;
-
-  HomeHighlightProduct({
+  Product({
     required this.productId,
     required this.categoryId,
     required this.categoryparentId,
     required this.sku,
     required this.name,
-    required this.description,
+    this.description,
     required this.price,
     required this.finalPrice,
-    required this.ispromotion,
+    required this.isPromotion,
     required this.percentDiscount,
     required this.image,
     this.imagesUrl,
-    this.stock,
-    this.display,
-    this.ratingScore,
-    this.ratingCount,
-    this.quantity,
-    this.warranty,
+    required this.stock,
+    required this.display,
+    required this.ratingScore,
+    required this.ratingCount,
+    required this.quantity,
+    required this.warranty,
     this.attachProduct,
     this.productDocument,
   });
 
-  factory HomeHighlightProduct.fromJson(Map<String, dynamic> json) {
-    return HomeHighlightProduct(
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
       productId: json['product_id'],
       categoryId: json['category_id'],
       categoryparentId: json['category_parent_id'],
@@ -55,13 +54,16 @@ class HomeHighlightProduct {
       description: json['description'],
       price: json['price'],
       finalPrice: json['final_price'],
-      ispromotion: json['is_promotion'],
+      isPromotion: json['is_promotion'],
       percentDiscount: json['percent_discount'],
-      image: json['image'],
-      imagesUrl: json['images_url'],
+      image: StringUtil.formatImageUrl(json['image']),
+      imagesUrl: json['images_url'] != null
+          ? List<String>.from(
+              json['images_url'].map((x) => StringUtil.formatImageUrl(x)))
+          : null,
       stock: json['stock'],
       display: json['display'],
-      ratingScore: json['rating_score'],
+      ratingScore: json['rating_score'].toDouble(),
       ratingCount: json['rating_count'],
       quantity: json['quantity'],
       warranty: json['warranty'],

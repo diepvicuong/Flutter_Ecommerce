@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:nordic_ecommerce/res/config.dart';
+import 'package:nordic_ecommerce/res/utils/string_util.dart';
 
 class HomeSlider {
   int id;
@@ -25,7 +26,7 @@ class HomeSlider {
     return HomeSlider(
       id: json['id'],
       url: json['url'],
-      image: AppConfig.baseUrl + json['image'],
+      image: StringUtil.formatImageUrl(json['image']),
       imageMobile: json['image_mobile'],
       tilte: json['title'],
       type: json['type'],

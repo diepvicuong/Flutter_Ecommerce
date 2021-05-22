@@ -1,5 +1,5 @@
 import 'package:nordic_ecommerce/modules/home/models/home_product_model.dart';
-import 'package:nordic_ecommerce/data/models/home_service.dart';
+import 'package:nordic_ecommerce/data/models/home/home_service.dart';
 import 'package:nordic_ecommerce/modules/product/models/product_item.dart';
 
 List<HomeService> listHomeService = [

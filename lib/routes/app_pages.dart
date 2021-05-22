@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nordic_ecommerce/bindings/product_binding.dart';
 import 'package:nordic_ecommerce/modules/home/page/home_page.dart';
@@ -11,9 +12,9 @@ class AppPages {
       name: Routes.INITIAL,
       page: () => HomePage(),
     ),
-    GetPage(
-        name: Routes.SUB_CATALOG,
-        page: () => ProductListPage(),
-        binding: ProductBinding()),
+    // GetPage(
+    //     name: Routes.PRODUCT_LST,
+    //     page: () => ProductListPage(),
+    //     binding: ProductBinding()),
   ];
 }

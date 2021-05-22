@@ -1,3 +1,5 @@
+import 'package:nordic_ecommerce/res/utils/string_util.dart';
+
 class HomePromotionProduct {
   int productId;
   int categoryId;
@@ -10,7 +12,7 @@ class HomePromotionProduct {
   int isPromotion;
   int percentDiscount;
   String image;
-  String? imagesUrl;
+  List<String>? imagesUrl;
   int stock;
   int display;
   int ratingScore;
@@ -54,8 +56,11 @@ class HomePromotionProduct {
       finalPrice: json['final_price'],
       isPromotion: json['is_promotion'],
       percentDiscount: json['percent_discount'],
-      image: json['image'],
-      imagesUrl: json['images_url'],
+      image: StringUtil.formatImageUrl(json['image']),
+      imagesUrl: json['images_url'] != null
+          ? List<String>.from(
+              json['images_url'].map((x) => StringUtil.formatImageUrl(x)))
+          : null,
       stock: json['stock'],
       display: json['display'],
       ratingScore: json['rating_score'],

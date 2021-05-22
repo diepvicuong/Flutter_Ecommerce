@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:nordic_ecommerce/data/models/home_category.dart';
-import 'package:nordic_ecommerce/data/models/home_model.dart';
+import 'package:nordic_ecommerce/data/models/home/home_category.dart';
+import 'package:nordic_ecommerce/data/models/home/home_model.dart';
 import 'package:nordic_ecommerce/data/repository/home_repository.dart';
 
 class HomeController extends GetxController {

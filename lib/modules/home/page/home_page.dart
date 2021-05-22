@@ -2,8 +2,9 @@ import 'package:carousel_pro_nullsafety/carousel_pro_nullsafety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:nordic_ecommerce/bindings/product_binding.dart';
 import 'package:nordic_ecommerce/controllers/home/home_controller.dart';
-import 'package:nordic_ecommerce/data/models/home_category.dart';
+import 'package:nordic_ecommerce/data/models/home/home_category.dart';
 import 'package:nordic_ecommerce/modules/home/widgets/home_searchbar_widget.dart';
 import 'package:nordic_ecommerce/modules/home/widgets/loading_widget.dart';
 import 'package:nordic_ecommerce/modules/product/page/product_list_page.dart';
@@ -266,8 +267,7 @@ class HomeCatalogWidget extends GetView<HomeController> {
         ),
       ),
       onTap: () {
-        Get.toNamed(Routes.SUB_CATALOG);
-        controller.selectedCatalog = item;
+        Get.to(ProductListPage(selectedCategory: item));
       },
     );
   }

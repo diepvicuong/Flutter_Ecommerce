@@ -1,8 +1,26 @@
 import 'package:get/get.dart';
-import 'package:nordic_ecommerce/data/models/home_category.dart';
+import 'package:nordic_ecommerce/data/models/product/product_list_model.dart';
+
+import 'package:nordic_ecommerce/data/models/product/product_model.dart';
+import 'package:nordic_ecommerce/data/repository/product_repository.dart';
 
 class ProductController extends GetxController {
-  final _subCategories = <HomeCategory>[].obs;
-  List<HomeCategory> get subCategories => this._subCategories.value;
-  set subCategories(value) => this._subCategories.value = value;
+  final ProductRepository productRepository;
+
+  ProductController({
+    required this.productRepository,
+  });
+
+  final _productList = <Product>[].obs;
+  get productList => this._productList.value;
+  set productList(value) => this._productList.value = value;
+
+  getProductListById(int categoryId) {
+    productRepository.getProductDataListById(categoryId).then((value) {
+      print(value);
+      if (value is ProductDataList) {
+        this.productList = value.productList;
+      }
+    });
+  }
 }

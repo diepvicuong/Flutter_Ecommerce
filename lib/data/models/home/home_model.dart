@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:nordic_ecommerce/data/models/home_category.dart';
-import 'package:nordic_ecommerce/data/models/home_highlight_product.dart';
-import 'package:nordic_ecommerce/data/models/home_promotion_product.dart';
-import 'package:nordic_ecommerce/data/models/home_service.dart';
-import 'package:nordic_ecommerce/data/models/home_slider.dart';
+import 'package:nordic_ecommerce/data/models/home/home_category.dart';
+import 'package:nordic_ecommerce/data/models/home/home_highlight_product.dart';
+import 'package:nordic_ecommerce/data/models/home/home_promotion_product.dart';
+import 'package:nordic_ecommerce/data/models/home/home_service.dart';
+import 'package:nordic_ecommerce/data/models/home/home_slider.dart';
 
 class HomeModel {
   List<HomeService>? homeServices;
