@@ -29,6 +29,11 @@ dependencies:
   get: ^4.1.4
   cached_network_image: ^3.0.0
 
+  dio_http_cache:
+    git:
+      url: https://github.com/hurshi/dio-http-cache.git
+      ref: master
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
