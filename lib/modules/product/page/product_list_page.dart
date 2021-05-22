@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:nordic_ecommerce/data/models/product/product_model.dart';
 import 'package:nordic_ecommerce/data/provider/api.dart';
 import 'package:nordic_ecommerce/data/repository/product_repository.dart';
 import 'package:nordic_ecommerce/modules/home/widgets/loading_widget.dart';
+import 'package:nordic_ecommerce/modules/product/page/product_detail_page.dart';
 import 'package:nordic_ecommerce/res/colors.dart';
 import 'package:nordic_ecommerce/res/sizes.dart';
 
@@ -179,8 +181,8 @@ class ProductListGridView extends StatelessWidget {
                       children: [
                         Expanded(
                             flex: 8,
-                            child: Image.network(
-                              item.image,
+                            child: CachedNetworkImage(
+                              imageUrl: item.image,
                               fit: BoxFit.fill,
                             )),
                         const SizedBox(height: AppSize.sizedBoxHeightS),
@@ -244,6 +246,7 @@ class ProductListGridView extends StatelessWidget {
       ),
       onTap: () {
         //handle onTap
+        Get.to(ProductDetailPage(product: item));
       },
     );
   }

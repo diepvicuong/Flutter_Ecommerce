@@ -1,8 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro_nullsafety/carousel_pro_nullsafety.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nordic_ecommerce/controllers/product/product_controller.dart';
+import 'package:nordic_ecommerce/data/models/product/product_model.dart';
 import 'package:nordic_ecommerce/res/sizes.dart';
+import 'package:nordic_ecommerce/res/styles.dart';
 
 class ProductDetailPage extends StatefulWidget {
+  final Product product;
+
+  const ProductDetailPage({Key? key, required this.product}) : super(key: key);
   @override
   _ProductDetailPageState createState() => _ProductDetailPageState();
 }
@@ -19,7 +27,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    Get.find<ProductController>().getDetailById(widget.product.productId);
     //Call api
   }
 
@@ -44,16 +52,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   floating: false,
                   flexibleSpace: FlexibleSpaceBar(
                       background: Carousel(
-                    images: [
-                      Image.network(
-                        'https://salt.tikicdn.com/cache/280x280/ts/product/96/08/ed/23722e613ec38abc946a4ff897e06ff2.jpg',
+                    images: List.generate(
+                      widget.product.imagesUrl!.length ?? 0,
+                      (index) => CachedNetworkImage(
+                        imageUrl: widget.product.imagesUrl![index],
                         fit: BoxFit.fill,
                       ),
-                      Image.network(
-                        'https://salt.tikicdn.com/cache/280x280/ts/product/7f/16/7d/a28d8427482d40ba39e1e0b9966e7c88.jpg',
-                        fit: BoxFit.fill,
-                      )
-                    ],
+                    ),
                     dotSize: 6.0,
                     dotSpacing: 15.0,
                     dotColor: Colors.purple[100]!,
@@ -65,7 +70,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   )),
                   leading: IconButton(
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Get.back();
                     },
                     icon: Icon(
                       Icons.arrow_back,
@@ -96,13 +101,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          'Bộ camera giám sát',
+                          widget.product.name,
                           style: TextStyle(fontSize: 20),
                         ),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('2.718.000đ',
+                              Text('${widget.product.price}',
                                   style: TextStyle(
                                     color: Colors.red,
                                   )),
@@ -116,10 +121,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         RichText(
                           text: TextSpan(
                             text: 'Model: ',
-                            style: DefaultTextStyle.of(context).style,
+                            style: AppStyle.textStyle,
                             children: <TextSpan>[
                               TextSpan(
-                                  text: 'NX-6-KIT',
+                                  text: '${widget.product.sku}',
                                   style: TextStyle(color: Colors.blue)),
                             ],
                           ),
@@ -127,10 +132,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         RichText(
                           text: TextSpan(
                             text: 'Kho hàng: ',
-                            style: DefaultTextStyle.of(context).style,
+                            style: AppStyle.textStyle,
                             children: <TextSpan>[
                               TextSpan(
-                                  text: 'Con 100 san pham',
+                                  text:
+                                      'Con ${widget.product.quantity} san pham',
                                   style: TextStyle(color: Colors.blue)),
                             ],
                           ),
@@ -146,7 +152,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                     text: TextSpan(
                                       text:
                                           'Mien phi van chuyen cho don hang tu ',
-                                      style: DefaultTextStyle.of(context).style,
+                                      style: AppStyle.textStyle,
                                       children: <TextSpan>[
                                         TextSpan(
                                             text: '200.000d',
@@ -184,7 +190,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               thickness: 2,
                               color: Colors.black,
                             ),
-                            Text('2'),
+                            Text('1'),
                             IconButton(
                               icon: Icon(Icons.add),
                               onPressed: () {},

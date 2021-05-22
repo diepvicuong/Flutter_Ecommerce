@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro_nullsafety/carousel_pro_nullsafety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,8 +21,10 @@ class HomePage extends GetView<HomeController> {
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.only(left: 10),
-          child: Image.network(
-              'https://salt.tikicdn.com/cache/280x280/ts/product/43/9a/bf/55d7e66b492fdbed1f3a55cf4602ec3a.jpg'),
+          child: CachedNetworkImage(
+            imageUrl:
+                'https://salt.tikicdn.com/cache/280x280/ts/product/43/9a/bf/55d7e66b492fdbed1f3a55cf4602ec3a.jpg',
+          ),
         ),
         titleSpacing: 5.0,
         title: CustomSearchBar(),
@@ -136,8 +139,8 @@ class HomeSliderWidget extends GetView<HomeController> {
       padding: const EdgeInsets.all(AppSize.homeItemPadding),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: Image.network(
-          imageUrl,
+        child: CachedNetworkImage(
+          imageUrl: imageUrl,
           fit: BoxFit.fill,
         ),
       ),
@@ -174,8 +177,8 @@ class HomeServiceWidget extends GetView<HomeController> {
       child: Column(
         children: [
           Card(
-            child: Image.network(
-              imageUrl,
+            child: CachedNetworkImage(
+              imageUrl: imageUrl,
               height: Get.height * AppSize.ratioHomeService - 50,
               width: Get.width * 0.8,
               fit: BoxFit.fill,
@@ -231,8 +234,8 @@ class HomeCatalogWidget extends GetView<HomeController> {
           children: [
             Expanded(
                 flex: 8,
-                child: Image.network(
-                  item.imageUrl,
+                child: CachedNetworkImage(
+                  imageUrl: item.imageUrl,
                   fit: BoxFit.fill,
                 )),
             const SizedBox(height: AppSize.sizedBoxHeightS),
