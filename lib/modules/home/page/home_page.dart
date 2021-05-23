@@ -1,14 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro_nullsafety/carousel_pro_nullsafety.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:nordic_ecommerce/bindings/product_binding.dart';
+import 'package:nordic_ecommerce/bindings/search_binding.dart';
 import 'package:nordic_ecommerce/controllers/home/home_controller.dart';
+import 'package:nordic_ecommerce/controllers/product/product_controller.dart';
 import 'package:nordic_ecommerce/data/models/home/home_category.dart';
+import 'package:nordic_ecommerce/data/provider/api.dart';
+import 'package:nordic_ecommerce/data/repository/product_repository.dart';
 import 'package:nordic_ecommerce/modules/home/widgets/home_searchbar_widget.dart';
 import 'package:nordic_ecommerce/modules/home/widgets/loading_widget.dart';
 import 'package:nordic_ecommerce/modules/product/page/product_list_page.dart';
+import 'package:nordic_ecommerce/modules/search/page/search_page.dart';
 import 'package:nordic_ecommerce/res/sample_value.dart';
 import 'package:nordic_ecommerce/res/sizes.dart';
 import 'package:nordic_ecommerce/res/styles.dart';
@@ -27,7 +33,18 @@ class HomePage extends GetView<HomeController> {
           ),
         ),
         titleSpacing: 5.0,
-        title: CustomSearchBar(),
+        title: GestureDetector(
+          onTap: () {
+            Get.to(SearchPage(), binding: SearchBinding());
+          },
+          child: CustomSearchBar(
+            hintText: 'Tim kiem san pham',
+            readOnly: true,
+            onTap: () {
+              Get.to(SearchPage(), binding: SearchBinding());
+            },
+          ),
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.phone_in_talk),
@@ -270,7 +287,8 @@ class HomeCatalogWidget extends GetView<HomeController> {
         ),
       ),
       onTap: () {
-        Get.to(ProductListPage(selectedCategory: item));
+        Get.find<ProductController>().getProductListById(item.id);
+        Get.to(ProductListPage(title: item.name));
       },
     );
   }

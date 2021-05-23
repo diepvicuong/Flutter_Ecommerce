@@ -13,27 +13,13 @@ import 'package:nordic_ecommerce/modules/product/page/product_detail_page.dart';
 import 'package:nordic_ecommerce/res/colors.dart';
 import 'package:nordic_ecommerce/res/sizes.dart';
 
-class ProductListPage extends StatefulWidget {
-  final HomeCategory selectedCategory;
+class ProductListPage extends GetView<ProductController> {
+  final String title;
+  final bool isSearching;
 
-  const ProductListPage({Key? key, required this.selectedCategory})
+  const ProductListPage(
+      {Key? key, required this.title, this.isSearching = false})
       : super(key: key);
-
-  @override
-  _ProductListPageState createState() => _ProductListPageState();
-}
-
-class _ProductListPageState extends State<ProductListPage> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    Get.put<ProductController>(ProductController(
-            productRepository:
-                ProductRepository(apiClient: MyApiClient(httpClient: Dio()))))
-        .getProductListById(widget.selectedCategory.id);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,17 +29,25 @@ class _ProductListPageState extends State<ProductListPage> {
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             // handle the press
+            controller.productList = <Product>[];
             Navigator.pop(context);
           },
         ),
-        title: Text('${widget.selectedCategory.name}'),
+        title: Text(this.title),
         actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              // handle the press
-            },
-          ),
+          this.isSearching
+              ? IconButton(
+                  icon: Icon(Icons.shopping_cart),
+                  onPressed: () {
+                    // handle the press
+                  },
+                )
+              : IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    // handle the press
+                  },
+                ),
         ],
       ),
       body: SingleChildScrollView(
@@ -131,6 +125,7 @@ class ProductListGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetX<ProductController>(
       builder: (c) {
+        print(c.productList);
         return c.productList.length > 0
             ? GridView.count(
                 shrinkWrap: true,

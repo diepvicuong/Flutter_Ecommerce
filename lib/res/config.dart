@@ -5,4 +5,7 @@ class AppConfig {
       baseUrl + '/api/product/category/${categoryId}';
   static String productDetailUrl(int productId) =>
       baseUrl + '/api/product/detail/${productId}';
+
+  static String productListSearchUrl(String str) =>
+      baseUrl + '/api/product/search?q=$str';
 }

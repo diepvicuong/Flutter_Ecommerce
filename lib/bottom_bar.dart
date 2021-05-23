@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nordic_ecommerce/modules/home/page/home_page.dart';
 import 'package:nordic_ecommerce/modules/product/page/product_detail_page.dart';
+import 'package:nordic_ecommerce/modules/search/page/search_page.dart';
 
 class BottomBar extends StatefulWidget {
   @override
@@ -13,8 +14,9 @@ class _BottomBarState extends State<BottomBar> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     HomePage(),
+    // SearchPage(),
     Text(
-      'Index 1: School',
+      'Index 2: School',
       style: optionStyle,
     ),
     Text(

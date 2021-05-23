@@ -8,7 +8,11 @@ class ProductRepository {
   ProductRepository({required this.apiClient}) : assert(apiClient != null);
 
   getProductDataListById(int categoryId) {
-    return apiClient.fetchProductDataList(categoryId);
+    return apiClient.fetchProductDataListById(categoryId);
+  }
+
+  getProductDataListBySearchString(String str) async {
+    return await apiClient.fetchProductDataListBySearchString(str);
   }
 
   getProductDetailById(int categoryId) {

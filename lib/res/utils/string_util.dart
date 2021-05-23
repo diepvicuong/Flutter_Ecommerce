@@ -11,4 +11,16 @@ class StringUtil {
       return AppConfig.baseUrl + url;
     }
   }
+
+  static List<String> addStrToArr(List<String> oldArr, String str) {
+    List<String> newArr = oldArr;
+    if (newArr.contains(str)) {
+      newArr.removeWhere((element) => element == str);
+    }
+    newArr.insert(0, str);
+    if (newArr.length > 5) {
+      newArr.removeRange(5, oldArr.length - 1);
+    }
+    return newArr;
+  }
 }

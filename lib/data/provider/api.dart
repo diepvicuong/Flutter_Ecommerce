@@ -34,11 +34,27 @@ class MyApiClient {
     return homeModel;
   }
 
-  fetchProductDataList(int categoryId) async {
+  fetchProductDataListById(int categoryId) async {
     ProductDataList? productDataList;
     try {
       print(AppConfig.productListUrl(categoryId));
       var response = await httpClient.get(AppConfig.productListUrl(categoryId),
+          options: _cacheOptions);
+
+      if (response.statusCode == 200 && response.data['data'] != null) {
+        productDataList = ProductDataList.fromJson(response.data['data']);
+      } else
+        print('error');
+    } catch (e) {
+      print(e);
+    }
+    return productDataList;
+  }
+
+  fetchProductDataListBySearchString(String str) async {
+    ProductDataList? productDataList;
+    try {
+      var response = await httpClient.get(AppConfig.productListSearchUrl(str),
           options: _cacheOptions);
 
       if (response.statusCode == 200 && response.data['data'] != null) {

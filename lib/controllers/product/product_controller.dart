@@ -28,6 +28,15 @@ class ProductController extends GetxController {
     });
   }
 
+  getProductListBySearchString(String str) async {
+    await productRepository.getProductDataListBySearchString(str).then((value) {
+      print(value.toString());
+      if (value is ProductDataList) {
+        this.productList = value.productList;
+      }
+    });
+  }
+
   getDetailById(int productId) {
     productRepository.getProductDetailById(productId).then((value) {
       print(value);
@@ -35,5 +44,13 @@ class ProductController extends GetxController {
         this.productList = value;
       }
     });
+  }
+
+  @override
+  void dispose() {
+    print('Product controller is disposed');
+    super.dispose();
+    this.productList = [];
+    this.selectedProductDetail = null;
   }
 }

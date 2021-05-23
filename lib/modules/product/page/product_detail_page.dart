@@ -53,7 +53,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   flexibleSpace: FlexibleSpaceBar(
                       background: Carousel(
                     images: List.generate(
-                      widget.product.imagesUrl!.length ?? 0,
+                      widget.product.imagesUrl?.length ?? 0,
                       (index) => CachedNetworkImage(
                         imageUrl: widget.product.imagesUrl![index],
                         fit: BoxFit.fill,
