@@ -29,11 +29,16 @@ dependencies:
   get: ^4.1.4
   cached_network_image: ^3.0.0
   shared_preferences: ^2.0.3
+  connectivity: ^3.0.4
 
   dio_http_cache:
     git:
       url: https://github.com/hurshi/dio-http-cache.git
       ref: master
+  # login_form:
+  #   git:
+  #     url: https://github.com/diepvicuong/Login_Form.git
+  #     ref: master
 
 dev_dependencies:
   flutter_test:

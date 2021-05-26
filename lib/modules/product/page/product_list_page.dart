@@ -126,19 +126,23 @@ class ProductListGridView extends StatelessWidget {
     return GetX<ProductController>(
       builder: (c) {
         print(c.productList);
-        return c.productList.length > 0
-            ? GridView.count(
-                shrinkWrap: true,
-                primary: false,
-                padding: const EdgeInsets.all(AppSize.homeItemPadding),
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
-                crossAxisCount: 2,
-                childAspectRatio: 2 / 3,
-                children: List.generate(c.productList.length,
-                    (index) => productItem(c.productList[index])),
-              )
-            : LoadingWidget();
+        return c.isLoading.value
+            ? LoadingWidget()
+            : c.productList.length > 0
+                ? GridView.count(
+                    shrinkWrap: true,
+                    primary: false,
+                    padding: const EdgeInsets.all(AppSize.homeItemPadding),
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                    crossAxisCount: 2,
+                    childAspectRatio: 2 / 3,
+                    children: List.generate(c.productList.length,
+                        (index) => productItem(c.productList[index])),
+                  )
+                : Container(
+                    child: Text('Product list is empty'),
+                  );
       },
     );
   }

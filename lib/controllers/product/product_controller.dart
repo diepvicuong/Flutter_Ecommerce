@@ -19,22 +19,30 @@ class ProductController extends GetxController {
   get selectedProductDetail => this._productList.value;
   set selectedProductDetail(value) => this._productList.value = value;
 
-  getProductListById(int categoryId) {
-    productRepository.getProductDataListById(categoryId).then((value) {
+  var isLoading = false.obs;
+
+  getProductListById(int categoryId) async {
+    this.isLoading.value = true;
+    await productRepository.getProductDataListById(categoryId).then((value) {
       print(value);
       if (value is ProductDataList) {
         this.productList = value.productList;
       }
     });
+    this.isLoading.value = false;
   }
 
   getProductListBySearchString(String str) async {
+    this.isLoading.value = true;
+
     await productRepository.getProductDataListBySearchString(str).then((value) {
       print(value.toString());
       if (value is ProductDataList) {
         this.productList = value.productList;
       }
     });
+
+    this.isLoading.value = false;
   }
 
   getDetailById(int productId) {

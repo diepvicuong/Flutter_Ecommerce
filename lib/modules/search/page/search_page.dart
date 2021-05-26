@@ -37,48 +37,39 @@ class _SearchPageState extends State<SearchPage> {
         ),
         title: Text('Tim kiem'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(AppSize.homeItemPadding),
-              child: CustomSearchBar(
-                hintText: 'Tim kiem san pham',
-                elevation: 5.0,
-                onChanged: (value) {
-                  print(value);
-                },
-                onFieldSubmitted: (value) async {
-                  await Get.find<ProductController>()
-                      .getProductListBySearchString(value);
-
-                  if (Get.find<ProductController>().productList.isEmpty) {
-                    Get.snackbar('Fail', 'Product list is empty');
-                  } else {
-                    final _strArr = Get.find<SearchController>().recentStr;
-                    SharedPreference.setSearchRecent(
-                        StringUtil.addStrToArr(_strArr, value));
-
-                    Get.off(
-                      ProductListPage(
-                        title: value,
-                        isSearching: true,
-                      ),
-                    );
-                  }
-                },
-              ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(AppSize.homeItemPadding),
+                  child: CustomSearchBar(
+                    hintText: 'Tim kiem san pham',
+                    elevation: 5.0,
+                    onChanged: (value) {
+                      print(value);
+                    },
+                    onFieldSubmitted: (value) async {
+                      Get.find<SearchController>().searchProductByStr(value);
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                RecentSearchWidget(),
+                Padding(
+                  padding: const EdgeInsets.all(AppSize.homeItemPadding),
+                  child: resultSearchWidget(),
+                ),
+              ],
             ),
-            SizedBox(
-              height: 10,
-            ),
-            RecentSearchWidget(),
-            Padding(
-              padding: const EdgeInsets.all(AppSize.homeItemPadding),
-              child: resultSearchWidget(),
-            ),
-          ],
-        ),
+          ),
+          Obx(() => Get.find<ProductController>().isLoading.value
+              ? LoadingWidget()
+              : SizedBox()),
+        ],
       ),
     );
   }
@@ -174,16 +165,23 @@ class RecentSearchWidget extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: recentStr.length,
                   itemBuilder: (context, index) {
+                    final searchStr = recentStr[index];
                     return Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: AppSize.sizeBoxWidthM),
-                          child: Chip(
-                            label: Text(
-                              recentStr[index],
+                        GestureDetector(
+                          onTap: () {
+                            Get.find<SearchController>()
+                                .searchProductByStr(searchStr);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: AppSize.sizeBoxWidthM),
+                            child: Chip(
+                              label: Text(
+                                searchStr,
+                              ),
+                              elevation: 5,
                             ),
-                            elevation: 5,
                           ),
                         ),
                       ],

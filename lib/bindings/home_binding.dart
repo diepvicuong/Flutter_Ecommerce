@@ -5,6 +5,7 @@ import 'package:nordic_ecommerce/controllers/product/product_controller.dart';
 import 'package:nordic_ecommerce/data/provider/api.dart';
 import 'package:nordic_ecommerce/data/repository/home_repository.dart';
 import 'package:nordic_ecommerce/data/repository/product_repository.dart';
+import 'package:nordic_ecommerce/services/conectivity_service.dart';
 
 class HomeBinding extends Bindings {
   @override
@@ -18,5 +19,11 @@ class HomeBinding extends Bindings {
     Get.put<ProductController>(ProductController(
         productRepository:
             ProductRepository(apiClient: MyApiClient(httpClient: Dio()))));
+
+    injectService();
+  }
+
+  void injectService() {
+    Get.put(ConnectivityService());
   }
 }

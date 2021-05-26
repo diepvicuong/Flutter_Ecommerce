@@ -39,7 +39,7 @@ class HomePage extends GetView<HomeController> {
           },
           child: CustomSearchBar(
             hintText: 'Tim kiem san pham',
-            readOnly: true,
+            isEnable: false,
             onTap: () {
               Get.to(SearchPage(), binding: SearchBinding());
             },

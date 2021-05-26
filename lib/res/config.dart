@@ -8,4 +8,6 @@ class AppConfig {
 
   static String productListSearchUrl(String str) =>
       baseUrl + '/api/product/search?q=$str';
+
+  static final int numOfRecentSearchStr = 10;
 }

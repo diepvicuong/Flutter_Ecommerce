@@ -7,7 +7,7 @@ class CustomSearchBar extends StatelessWidget {
   final ValueChanged<String>? onFieldSubmitted;
   final double? elevation;
   final double? marginValue;
-  final bool readOnly;
+  final bool isEnable;
 
   const CustomSearchBar(
       {Key? key,
@@ -17,7 +17,7 @@ class CustomSearchBar extends StatelessWidget {
       this.elevation,
       this.marginValue,
       this.onFieldSubmitted,
-      this.readOnly = false})
+      this.isEnable = true})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class CustomSearchBar extends StatelessWidget {
           icon: Icon(Icons.search),
         ),
         textInputAction: TextInputAction.search,
-        readOnly: this.readOnly,
+        enabled: this.isEnable,
         onChanged: this.onChanged,
         onTap: this.onTap,
         onFieldSubmitted: this.onFieldSubmitted,
