@@ -1,4 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nordic_ecommerce/modules/login/page/signup_page.dart';
 import 'package:nordic_ecommerce/res/sizes.dart';
 import 'package:nordic_ecommerce/res/styles.dart';
 
@@ -17,9 +20,9 @@ class LoginPage extends StatelessWidget {
         ),
         title: Text('Login'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSize.homeItemPadding),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(AppSize.homeItemPadding),
           child: Column(
             children: [
               LoginForm(
@@ -61,16 +64,47 @@ class LoginPage extends StatelessWidget {
               Text('Login with:'),
               SizedBox(height: 10),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                IconButton(
-                    icon: Icon(
-                      Icons.face,
-                      size: 20,
-                    ),
-                    onPressed: () {}),
-                IconButton(icon: Icon(Icons.gamepad), onPressed: () {}),
+                Container(
+                  padding: EdgeInsets.all(1),
+                  decoration: BoxDecoration(shape: BoxShape.circle),
+                  child: CircleAvatar(
+                    radius: 20.0,
+                    backgroundImage: NetworkImage(
+                        'https://www.ecoblader.com/wp-content/uploads/2013/02/ecoblader-facebook.jpg'),
+                  ),
+                ),
+                SizedBox(width: 20),
+                Container(
+                  padding: EdgeInsets.all(1),
+                  decoration: BoxDecoration(
+                      color: Colors.blueGrey, shape: BoxShape.circle),
+                  child: CircleAvatar(
+                    radius: 20.0,
+                    backgroundImage: NetworkImage(
+                        'https://banner2.cleanpng.com/20180610/jeu/kisspng-google-logo-google-search-google-now-5b1dacc1ad0462.3234288415286714257087.jpg'),
+                  ),
+                )
               ]),
               // Spacer(),
-              Text('Do not have account? Sign up'),
+              SizedBox(height: 20),
+
+              RichText(
+                text: TextSpan(
+                  text: "Don't have account? ",
+                  style: AppStyle.textStyle,
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: 'Sign up',
+                        style: TextStyle(color: Colors.amber),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            //Navigate to signup page
+                            print('Navigate to signup page');
+                            Get.to(SignupPage());
+                          }),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -134,7 +168,6 @@ class _LoginFormState extends State<LoginForm> {
   bool _obscureText = true;
   late TextEditingController _userController;
   late TextEditingController _passwordController;
-  final focus = FocusNode();
 
   @override
   void initState() {
@@ -161,9 +194,9 @@ class _LoginFormState extends State<LoginForm> {
             controller: _userController,
             validator: widget.userValidator,
             textInputAction: TextInputAction.next,
-            onFieldSubmitted: (_) {
-              FocusScope.of(context).requestFocus(focus);
-            },
+            // onFieldSubmitted: (_) {
+            //   FocusScope.of(context).requestFocus(focus);
+            // },
             style: widget.style,
             decoration: InputDecoration(
                 border: widget.border,
@@ -177,11 +210,9 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(height: 20),
           TextFormField(
             controller: _passwordController,
-            focusNode: focus,
             obscureText: _obscureText,
             validator: widget.passwordValidator,
             textInputAction: TextInputAction.done,
-            onFieldSubmitted: (_) {},
             style: widget.style,
             decoration: InputDecoration(
               border: widget.border,
@@ -199,7 +230,7 @@ class _LoginFormState extends State<LoginForm> {
                   });
                 },
                 child: Icon(
-                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                  _obscureText ? Icons.visibility_off : Icons.visibility,
                   color: widget.labelStyle?.color,
                 ),
               ),
