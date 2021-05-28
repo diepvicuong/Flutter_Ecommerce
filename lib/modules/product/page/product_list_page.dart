@@ -8,7 +8,7 @@ import 'package:nordic_ecommerce/data/models/home/home_category.dart';
 import 'package:nordic_ecommerce/data/models/product/product_model.dart';
 import 'package:nordic_ecommerce/data/provider/api.dart';
 import 'package:nordic_ecommerce/data/repository/product_repository.dart';
-import 'package:nordic_ecommerce/modules/home/widgets/loading_widget.dart';
+import 'package:nordic_ecommerce/res/common_widget/loading_widget.dart';
 import 'package:nordic_ecommerce/modules/product/page/product_detail_page.dart';
 import 'package:nordic_ecommerce/res/colors.dart';
 import 'package:nordic_ecommerce/res/sizes.dart';
@@ -112,6 +112,28 @@ class ProductListFilter extends StatelessWidget {
             ),
             onPressed: () {
               // handle the press
+              showBottomSheet(
+                context: context,
+                builder: (context) {
+                  return Container(
+                    height: 200,
+                    color: Colors.amber,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          const Text('Modal BottomSheet'),
+                          ElevatedButton(
+                            child: const Text('Close BottomSheet'),
+                            onPressed: () => Navigator.pop(context),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
             },
           ),
         ],

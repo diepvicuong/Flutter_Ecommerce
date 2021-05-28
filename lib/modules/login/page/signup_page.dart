@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nordic_ecommerce/res/common_widget/CircleBorderButton.dart';
+import 'package:nordic_ecommerce/res/common_widget/circle_image_button.dart';
 import 'package:nordic_ecommerce/res/sizes.dart';
 
 class SignupPage extends StatelessWidget {

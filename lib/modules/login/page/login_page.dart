@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nordic_ecommerce/modules/login/page/signup_page.dart';
+import 'package:nordic_ecommerce/res/common_widget/circle_image_button.dart';
 import 'package:nordic_ecommerce/res/sizes.dart';
 import 'package:nordic_ecommerce/res/styles.dart';
 
@@ -64,26 +65,22 @@ class LoginPage extends StatelessWidget {
               Text('Login with:'),
               SizedBox(height: 10),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Container(
-                  padding: EdgeInsets.all(1),
-                  decoration: BoxDecoration(shape: BoxShape.circle),
-                  child: CircleAvatar(
-                    radius: 20.0,
-                    backgroundImage: NetworkImage(
-                        'https://www.ecoblader.com/wp-content/uploads/2013/02/ecoblader-facebook.jpg'),
-                  ),
+                CircleImageButton(
+                  image: NetworkImage(
+                      'https://www.ecoblader.com/wp-content/uploads/2013/02/ecoblader-facebook.jpg'),
+                  onTap: () {
+                    print('onTap: Facebook');
+                  },
                 ),
                 SizedBox(width: 20),
-                Container(
-                  padding: EdgeInsets.all(1),
-                  decoration: BoxDecoration(
-                      color: Colors.blueGrey, shape: BoxShape.circle),
-                  child: CircleAvatar(
-                    radius: 20.0,
-                    backgroundImage: NetworkImage(
-                        'https://banner2.cleanpng.com/20180610/jeu/kisspng-google-logo-google-search-google-now-5b1dacc1ad0462.3234288415286714257087.jpg'),
-                  ),
-                )
+                CircleImageButton(
+                  image: NetworkImage(
+                      'https://banner2.cleanpng.com/20180610/jeu/kisspng-google-logo-google-search-google-now-5b1dacc1ad0462.3234288415286714257087.jpg'),
+                  borderColor: Colors.grey,
+                  onTap: () {
+                    print('onTap: Google');
+                  },
+                ),
               ]),
               // Spacer(),
               SizedBox(height: 20),
