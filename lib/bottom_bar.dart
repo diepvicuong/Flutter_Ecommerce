@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nordic_ecommerce/modules/home/page/home_page.dart';
 import 'package:nordic_ecommerce/modules/login/page/login_page.dart';
+import 'package:nordic_ecommerce/modules/test/push_notification.dart';
 import 'package:nordic_ecommerce/modules/test/test.dart';
 
 class BottomBar extends StatefulWidget {
@@ -13,13 +14,18 @@ class _BottomBarState extends State<BottomBar> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
-    LoginPage(),
-    TestPage(),
-    // Text(
-    //   'Index 2: School',
-    //   style: optionStyle,
-    // ),
+    // HomePage(),
+    // LoginPage(),
+
+    NotiPage(),
+    Text(
+      'Index 2: School',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 3: Settings',
+      style: optionStyle,
+    ),
     Text(
       'Index 3: Settings',
       style: optionStyle,

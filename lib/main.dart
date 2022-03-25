@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: BottomBar(),
-      initialBinding: HomeBinding(),
+      // initialBinding: HomeBinding(),
       initialRoute: Routes.INITIAL,
       getPages: AppPages.pages,
     );
